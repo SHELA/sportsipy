@@ -1807,9 +1807,13 @@ class Boxscores:
             end_week = week
         while week <= end_week:
             url = self._create_url(week, year)
-            page = self._get_requested_page(url)
-            games = page('table[class="teams"]').items()
-            boxscores = self._extract_game_info(games)
+            boxscores = []
+            try:
+                page = self._get_requested_page(url)
+                games = page('table[class="teams"]').items()
+                boxscores = self._extract_game_info(games)
+            except Exception:
+                pass
             timestamp = '%s-%s' % (week, year)
             self._boxscores[timestamp] = boxscores
             week += 1
